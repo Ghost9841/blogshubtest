@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export default function HeroSection() {
   return (
     <main className="min-h-screen flex items-start justify-center pt-16">
-      <div className="container px-4 grid md:grid-cols-2 gap-8 items-center">
+      <div className="container max-w-7xl w-full  px-4 grid md:grid-cols-2 gap-8 items-center">
         {/* Left: Copy */}
         <div className="space-y-6">
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">

@@ -16,7 +16,7 @@ import { ModeToggle } from "../sun-moon";
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-<div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-4">
+<div className="w-full max-w-8xl mx-auto flex h-16 items-center justify-between px-4">
         {/* Left: Logo / Brand */}
         <div className="flex flex-row gap-10">
         <Link href="/" className="flex items-center space-x-2">
