@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, FilePlusCorner } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +19,7 @@ export default function Navbar() {
 <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-4">
         {/* Left: Logo / Brand */}
         <div className="flex flex-row gap-10">
-        <Link href="/" className="flex flex-col items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-2">
           <span className="text-xl font-bold">BlogHub</span>
         </Link>
 
@@ -48,7 +48,8 @@ export default function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
-                <Link href="/my-posts">My Posts</Link>
+                <Link href="/my-posts">
+                <FilePlusCorner className=" h-4 w-4" />My Posts</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
