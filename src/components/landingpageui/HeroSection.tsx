@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function HeroSection() {
   return (
@@ -39,7 +40,12 @@ export default function HeroSection() {
 
         {/* Right: Placeholder visual (optional) */}
         <div className="hidden md:flex items-center justify-center">
-          <div className="w-full h-80 rounded-xl bg-linear-to-br from-primary/20 to-primary/10" />
+          <img
+          src="/hero.webp" 
+          alt="Placeholder 1 image"
+          width={500}
+          height={200}
+          className="rounded-xl object-cover" />
         </div>
       </div>
     </main>
