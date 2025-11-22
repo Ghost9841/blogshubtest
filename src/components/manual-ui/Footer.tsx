@@ -27,15 +27,12 @@ const footerLinks = {
 export default function Footer() {
   return (
     <footer
-      className="border-t text-white"
-      style={{
-        background: "url('/footer-wave.svg')",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center -65px"
-      }}
-    >
-      <div className="w-full max-w-7xl mx-auto py-10 px-4">
+      className="border-t
+    bg-[url('/footer-wave.svg')] 
+    bg-no-repeat bg-cover bg-position-[center_-83px]
+  "
+  >
+      <div className="w-full max-w-7xl mx-auto py-10 px-4 text-white ">
         {/* Top row: brand + app badge */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <Link href="/" className="text-xl font-bold">
@@ -68,7 +65,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-muted-foreground hover:underline"
+                      className="text-sm text-gray-400 hover:underline"
                     >
                       {link.label}
                     </Link>
