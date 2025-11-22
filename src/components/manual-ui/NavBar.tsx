@@ -30,10 +30,9 @@ export default function Navbar() {
             <span className="text-xl font-bold">BlogHub</span>
           </Link>
 
-          <Button variant="ghost" size="sm" className="space-x-1">
+          <Link href="/allblogs" className="flex items-center space-x-2">
             <span>Browse</span>
-            <ChevronDown className="h-4 w-4" />
-          </Button>
+          </Link>
 
           <div className="hidden w-full max-w-sm md:flex">
             <div className="relative w-full">
@@ -55,9 +54,16 @@ export default function Navbar() {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link href="/my-posts">
-                  <FilePlusCorner className="h-4 w-4" /> My Posts
+              {user && (
+                <DropdownMenuItem asChild className="text-lg font-bold hover:underline">
+                <Link href="/create-blog" >
+                    <FilePlusCorner className="h-8! w-8! font-bold" /> New Blog
+                  </Link>
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem asChild  className="hover:underline">
+                <Link href="/myblogs">
+                   My Blogs
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
