@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -23,7 +24,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="w-full max-w-8xl mx-auto flex h-16 items-center justify-between px-4">
-        
+
 
         <div className="flex flex-row gap-10">
           <Link href="/" className="flex items-center space-x-2">
@@ -43,8 +44,8 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center space-x-3">
-          
-       
+
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="space-x-1">
@@ -56,14 +57,14 @@ export default function Navbar() {
             <DropdownMenuContent align="end">
               {user && (
                 <DropdownMenuItem asChild className="text-lg font-bold hover:underline">
-                <Link href="/create-blog" >
+                  <Link href="/create-blog" >
                     <FilePlusCorner className="h-8! w-8! font-bold" /> New Blog
                   </Link>
                 </DropdownMenuItem>
               )}
-              <DropdownMenuItem asChild  className="hover:underline">
+              <DropdownMenuItem asChild className="hover:underline">
                 <Link href="/myblogs">
-                   My Blogs
+                  My Blogs
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -89,22 +90,22 @@ export default function Navbar() {
                 <Button variant="outline" className="flex items-center gap-2">
                   <Avatar>
                     <AvatarImage src={user.avatar} className="h-4 w-4"></AvatarImage>
-                    </Avatar>
+                  </Avatar>
                   {user.name}
                 </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end" className="w-40">
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild className="text-xl hover:underline">
                   <Link href="/profile">
                     <User className="mr-2 h-4 w-4" />
                     Profile
                   </Link>
                 </DropdownMenuItem>
-
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={logout}
-                  className="text-red-500 focus:text-red-600"
+                  className="text-red-500 focus:text-red-600  hover:underline"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   Logout

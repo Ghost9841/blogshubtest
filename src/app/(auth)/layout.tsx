@@ -1,3 +1,5 @@
+import Footer from "@/components/manual-ui/Footer";
+import Navbar from "@/components/manual-ui/NavBar";
 import AuthContext from "@/context/AuthContext";
 import type { Metadata } from "next";
 
@@ -27,5 +29,11 @@ export const metadata: Metadata = {
 };
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  return <AuthContext>{children}</AuthContext>;
+  return (
+  <AuthContext>
+    <Navbar/>
+    {children}
+    <Footer/>
+    </AuthContext>
+);
 }
