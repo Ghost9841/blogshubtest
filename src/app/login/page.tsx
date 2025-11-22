@@ -1,3 +1,4 @@
+'use client'
 import { GalleryVerticalEnd } from "lucide-react"
 
 
@@ -34,11 +35,27 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useAuth } from "@/hooks/useAuth"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { loginUser } = useAuth();
+  const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+  const router = useRouter();
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+  try {
+    await loginUser(email, password);
+    router.push("/dashboard");
+  } catch (err) {
+    alert("Invalid email or password");
+  }
+}
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -49,7 +66,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <FieldGroup>
               <Field>
                 <Button variant="outline" type="button">
@@ -72,6 +89,8 @@ export function LoginForm({
                   type="email"
                   placeholder="m@example.com"
                   required
+                  value={email}
+    onChange={(e) => setEmail(e.target.value)}
                 />
               </Field>
               <Field>
@@ -84,7 +103,7 @@ export function LoginForm({
                     Forgot your password?
                   </a> */}
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" required   onChange={(e) => setPassword(e.target.value)}/>
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
