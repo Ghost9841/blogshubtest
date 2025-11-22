@@ -30,8 +30,8 @@ import {
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
-  { title: "My Posts", url: "/posts", icon: FileText },
-  { title: "Create Post", url: "/create", icon: PlusSquare },
+  { title: "My Blogs", url: "/myblogs", icon: FileText },
+  { title: "Create Post", url: "/createblog", icon: PlusSquare },
   { title: "Categories", url: "/categories", icon: Folder },
   { title: "Drafts", url: "/drafts", icon: Edit3 },
   { title: "Settings", url: "/settings", icon: Settings },
