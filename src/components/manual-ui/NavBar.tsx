@@ -22,7 +22,10 @@ export default function Navbar() {
         <Link href="/" className="flex items-center space-x-2">
           <span className="text-xl font-bold">BlogHub</span>
         </Link>
-
+        <Button variant="ghost" size="sm" className="space-x-1">
+                <span>Browse</span>
+                <ChevronDown className="h-4 w-4" />
+              </Button>
         <div className="hidden w-full max-w-sm md:flex">
           <div className="relative w-full">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
