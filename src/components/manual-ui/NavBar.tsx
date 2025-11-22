@@ -13,6 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "../sun-moon";
 import { useAuthStore } from "@/store/authStore";
+import { Avatar } from "@radix-ui/react-avatar";
+import { AvatarImage } from "../ui/avatar";
 
 export default function Navbar() {
   const user = useAuthStore((s) => s.user);
@@ -79,7 +81,9 @@ export default function Navbar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
+                  <Avatar>
+                    <AvatarImage src={user.avatar} className="h-4 w-4"></AvatarImage>
+                    </Avatar>
                   {user.name}
                 </Button>
               </DropdownMenuTrigger>
