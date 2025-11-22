@@ -13,14 +13,22 @@ interface AuthState {
   isAuthenticated: boolean;
   login: (user: User) => void;
   logout: () => void;
+  hydrate: () => void; 
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  user: typeof window !== "undefined" && localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user")!)
-    : null,
-  isAuthenticated: typeof window !== "undefined" && !!localStorage.getItem("user"),
-  
+  user: null,
+  isAuthenticated: false,
+
+  hydrate: () => {
+    if (typeof window === "undefined") return;
+    const saved = localStorage.getItem("user");
+
+    if (saved) {
+      set({ user: JSON.parse(saved), isAuthenticated: true });
+    }
+  },
+
   login: (user) => {
     set({ user, isAuthenticated: true });
     localStorage.setItem("user", JSON.stringify(user));
@@ -33,3 +41,5 @@ export const useAuthStore = create<AuthState>((set) => ({
     localStorage.removeItem("token");
   },
 }));
+
+export default useAuthStore;
