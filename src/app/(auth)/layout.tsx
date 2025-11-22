@@ -1,3 +1,4 @@
+import AuthContext from "@/context/AuthContext";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -25,14 +26,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="">
-        {children}
-    </div>
-  );
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
+  return <AuthContext>{children}</AuthContext>;
 }
