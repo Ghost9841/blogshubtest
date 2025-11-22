@@ -57,7 +57,7 @@ export default function Navbar() {
             <DropdownMenuContent align="end">
               {user && (
                 <DropdownMenuItem asChild className="text-lg font-bold hover:underline">
-                  <Link href="/create-blog" >
+                  <Link href="/createblog" >
                     <FilePlusCorner className="h-8! w-8! font-bold" /> New Blog
                   </Link>
                 </DropdownMenuItem>
