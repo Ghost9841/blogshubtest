@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/store/authStore";
 import axios from "axios";
 
-const API = "https://67566fc611ce847c992cc7b5.mockapi.io/users/users";
+const API = "https://67566fc611ce847c992cc7b5.mockapi.io/users";
 
 export function useAuth() {
   const { login } = useAuthStore();
@@ -15,9 +15,13 @@ export function useAuth() {
 
     if (!found) throw new Error("Invalid credentials");
 
-    login(found);
+    login(found); // Saves user + token to localStorage
     return found;
   };
 
-  return { loginUser };
+  const logoutUser = () => {
+    useAuthStore.getState().logout();
+  };
+
+  return { loginUser, logoutUser };
 }

@@ -1,5 +1,5 @@
 "use client";
-import useAuthStore from "@/store/authStore";
+import { useAuthStore } from "@/store/authStore";
 import { redirect } from "next/navigation";
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
