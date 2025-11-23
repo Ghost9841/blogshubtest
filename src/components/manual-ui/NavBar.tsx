@@ -16,10 +16,17 @@ import { ModeToggle } from "../sun-moon";
 import { useAuthStore } from "@/store/authStore";
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarImage } from "../ui/avatar";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+  const router = useRouter();
+    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const q = new FormData(e.currentTarget).get("q") as string;
+    if (q.trim()) router.push(`/search?q=${encodeURIComponent(q.trim())}`);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -44,12 +51,10 @@ export default function Navbar() {
             <span>Browse</span>
           </Link>
 
-          <div className="hidden w-full max-w-sm md:flex">
-            <div className="relative w-full">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input type="search" placeholder="Search..." className="pl-8" />
-            </div>
-          </div>
+             <form onSubmit={handleSearch} className="relative hidden w-full max-w-sm md:flex">
+      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+      <Input name="q" placeholder="Search blogs & users…" className="pl-8" />
+    </form>
         </div>
 
         <div className="flex items-center space-x-3">
@@ -116,7 +121,7 @@ export default function Navbar() {
                   onClick={logout}
                   className="text-red-500 focus:text-red-600  hover:underline"
                 >
-                  <LogOut className="mr-2 h-4 w-4" />
+                  <LogOut className="mr-2 h-4 w-4 text-red-500" />
                   Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>

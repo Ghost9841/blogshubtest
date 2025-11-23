@@ -204,8 +204,10 @@ function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={logout}>
-              <LogOut className="w-4 h-4 mr-2" />
+            <DropdownMenuItem onClick={logout}
+            className="text-red-500 focus:text-red-600  hover:underline"
+>
+              <LogOut className="w-4 h-4 mr-2 text-red-500" />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
