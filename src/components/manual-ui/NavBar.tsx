@@ -28,6 +28,15 @@ export default function Navbar() {
 
         <div className="flex flex-row gap-10">
           <Link href="/" className="flex items-center space-x-2">
+           <span
+                className="
+                  flex h-10 w-10 items-center justify-center rounded-lg 
+                  bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black
+                  font-bold text-lg
+                "
+              >
+                B
+              </span>
             <span className="text-xl font-bold">BlogHub</span>
           </Link>
 

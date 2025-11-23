@@ -49,7 +49,7 @@ export function PostCard({
   onRead: () => void;
 }) {
   return (
-    <div className="border rounded-lg p-4 flex flex-col justify-between hover:shadow-md transition">
+    <div className="border rounded-lg hover:cursor-pointer p-4 flex flex-col justify-between hover:shadow-md transition" onClick={onRead}>
       <div>
         <div className="flex items-start justify-between gap-2">
           <Badge variant={post.status ? "default" : "secondary"}>
@@ -69,9 +69,6 @@ export function PostCard({
               </DropdownMenuItem>
               <DropdownMenuItem onClick={onDelete} className="text-destructive flex items-center gap-2">
                 <Trash2 className="h-3 w-3" /> Delete
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={onRead} className="flex items-center gap-2">
-                <ExternalLink className="h-3 w-3" /> Read
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -133,7 +130,7 @@ export function EmptyState({ query }: { query: string }) {
         Start writing to see your stories here.
       </p>
       <Link href="/createblog">
-        <Button className="mt-4">
+        <Button className="mt-4 hover:cursor-pointer">
           <Plus className="h-4 w-4 mr-2" />
           Create your first post
         </Button>

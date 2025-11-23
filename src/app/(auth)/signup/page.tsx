@@ -28,14 +28,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-  FieldDescription,
-  FieldError,
-  FieldSeparator,
-} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
 import { useForm } from "react-hook-form";
@@ -44,6 +36,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import { SignupFormType, signupSchema } from "@/components/schema/authSchema";
 import { useRouter } from "next/navigation";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldSeparator } from "@/components/ui/field";
 
 export function SignupForm({ className, ...props }: React.ComponentProps<"div">) {
   const router = useRouter();
