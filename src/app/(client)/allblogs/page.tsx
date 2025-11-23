@@ -1,4 +1,3 @@
-// app/allblogs/page.tsx  (or pages/allblogs.tsx if you use pages router)
 "use client";
 
 import usePosts from "@/hooks/usePosts";
@@ -10,10 +9,10 @@ import { formatDistance } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Eye, Heart } from "lucide-react";
+import { EmptyState, PostGridSkeleton, stripHtml } from "./AllBlogsPageComp";
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 100;
 
 export default function AllBlogsPage() {
   const { posts, fetchPosts, loading, error } = usePosts();
@@ -51,7 +50,9 @@ export default function AllBlogsPage() {
 
       {/* grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => (
+        {posts
+        .filter((post) => post.status)
+        .map((post) => (
           <PostCard key={post.id} post={post} />
         ))}
 
@@ -77,11 +78,8 @@ export default function AllBlogsPage() {
   );
 }
 
-/* -------------------------------------------------- */
-/*  single card                                       */
-/* -------------------------------------------------- */
-function PostCard({ post }: { post: any }) {
-  const cover = post.coverImage || `https://source.unsplash.com/random/400x250?blog,${post.id}`;
+export function PostCard({ post }: { post: any }) {
+  const cover = post.coverImage || `https://source.unsplash.com/random/400x250?blog ,${post.id}`;
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
@@ -129,51 +127,4 @@ function PostCard({ post }: { post: any }) {
       </CardFooter>
     </Card>
   );
-}
-
-/* -------------------------------------------------- */
-/*  skeleton while loading                            */
-/* -------------------------------------------------- */
-function PostGridSkeleton() {
-  return (
-    <>
-      {[...Array(PAGE_SIZE)].map((_, i) => (
-        <Card key={i} className="overflow-hidden">
-          <Skeleton className="h-48 w-full" />
-          <CardHeader>
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-5 w-full" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-3/4 mt-2" />
-          </CardContent>
-        </Card>
-      ))}
-    </>
-  );
-}
-
-/* -------------------------------------------------- */
-/*  empty state                                       */
-/* -------------------------------------------------- */
-function EmptyState() {
-  return (
-    <div className="text-center py-16 text-muted-foreground">
-      <p className="text-lg font-medium">No posts yet.</p>
-      <p className="text-sm">Be the first to share a story!</p>
-    </div>
-  );
-}
-
-/* -------------------------------------------------- */
-/*  helper                                            */
-/* -------------------------------------------------- */
-function stripHtml(html = ""): string {
-  try {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent || "";
-  } catch {
-    return html;
-  }
 }
