@@ -4,7 +4,7 @@ interface Post {
   id: string;
   title: string;
   content: string;
-  authorId: string;
+  authorName: string;
   coverImage?: string;
   status: boolean;
   createdAt: string;

@@ -3,117 +3,140 @@
 import usePosts from "@/hooks/usePosts";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AllBlogsPage() {
   const { posts, fetchPosts, loading, error } = usePosts();
-
-  // Pagination states
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 6; // blogs per page
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const pageSize = 6;
 
   useEffect(() => {
-    fetchPosts(currentPage, pageSize);
+    loadMorePosts();
   }, []);
 
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (error) return <div className="p-6 text-red-600">{error}</div>;
-
-  // Pagination logic
-  const totalPages = Math.ceil(posts.length / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const paginatedPosts = posts.slice(startIndex, startIndex + pageSize);
+  const loadMorePosts = async () => {
+    const newPosts = await fetchPosts(page, pageSize);
+    
+    if (newPosts && newPosts.length < pageSize) {
+      setHasMore(false);
+    }
+    
+    setPage((p) => p + 1);
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-10">
+      <header className="text-center space-y-2">
+        <h1 className="text-4xl font-bold text-gray-900">All Blogs</h1>
+        <p className="text-gray-600">Discover amazing stories and insights</p>
+      </header>
 
-      <h1 className="text-3xl font-bold mb-4">All Blogs</h1>
+      {error && (
+        <div className="p-4 bg-red-50 text-red-600 rounded-lg text-center">
+          {error}
+        </div>
+      )}
 
-      {/* Blog List */}
-      <div className="space-y-10">
-        {paginatedPosts.map((post) => (
-          <div
+      <div className="space-y-8">
+        {posts.map((post) => (
+          <article
             key={post.id}
-            className="flex items-start justify-between gap-4 border-b pb-6"
+            className="flex flex-col md:flex-row items-start gap-6 p-6 border border-gray-200 rounded-xl hover:shadow-lg transition-shadow"
           >
-            {/* Left Section */}
-            <div className="flex-1">
+            {/* Content */}
+            <div className="flex-1 space-y-3">
               <div className="flex items-center gap-2 text-sm text-gray-500">
                 <span className="font-medium">
-                  {post.authorId?.slice(0, 6) || "Unknown"}
+                  {post.authorName?.slice(0, 6) || "Unknown"}
                 </span>
                 <span>•</span>
                 <span>{new Date(post.createdAt).toDateString()}</span>
               </div>
 
-              <h2 className="text-xl font-semibold mt-1">{post.title}</h2>
+              <Link href={`/allblogs/${post.id}`}>
+                <h2 className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors line-clamp-2">
+                  {post.title}
+                </h2>
+              </Link>
 
-              <p className="text-gray-600 mt-1 line-clamp-2">
+              <p className="text-gray-600 line-clamp-3 leading-relaxed">
                 {post.content}
               </p>
 
-              {/* Tags + Likes */}
-              <div className="flex items-center gap-4 mt-3">
-
-                <span className="px-2 py-1 rounded-md bg-gray-100 text-sm">
+              <div className="flex items-center gap-4 flex-wrap">
+                <span className={`px-2 py-1 rounded-md text-xs font-medium ${
+                  post.status 
+                    ? "bg-green-100 text-green-800" 
+                    : "bg-yellow-100 text-yellow-800"
+                }`}>
                   {post.status ? "Published" : "Draft"}
                 </span>
-
                 <span className="text-sm text-gray-700 flex items-center gap-1">
                   ❤️ {post.likes || 0}
                 </span>
 
                 {post.tags?.length > 0 && (
-                  <div className="flex gap-2">
-                    {post.tags.map((tag, idx) => (
+                  <div className="flex gap-1">
+                    {post.tags.slice(0, 3).map((tag, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-1 bg-gray-200 rounded-md text-xs"
+                        className="px-2 py-1 bg-gray-100 rounded-md text-xs"
                       >
                         #{tag}
                       </span>
                     ))}
+                    {post.tags.length > 3 && (
+                      <span className="px-2 py-1 text-gray-500 text-xs">
+                        +{post.tags.length - 3} more
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Right: Image */}
+            {/* Image */}
             {post.coverImage && (
-              <Image
-                src={post.coverImage}
-                alt={post.title}
-                width={120}
-                height={90}
-                className="rounded-md object-cover"
-              />
+              <Link href={`/allblogs/${post.id}`} className="shrink-0">
+                <Image
+                  src={post.coverImage}
+                  alt={post.title}
+                  width={120}
+                  height={90}
+                  className="rounded-lg object-cover hover:scale-105 transition-transform"
+                />
+              </Link>
             )}
-          </div>
+          </article>
         ))}
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center items-center gap-4 mt-10">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage((p) => p - 1)}
-          className="px-3 py-1 border rounded disabled:opacity-50"
-        >
-          Prev
-        </button>
+      {/* Load More */}
+      {hasMore && (
+        <div className="flex justify-center mt-10">
+          <button
+            onClick={loadMorePosts}
+            disabled={loading}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+          >
+            {loading ? "Loading..." : "Load More Posts"}
+          </button>
+        </div>
+      )}
 
-        <span className="text-sm">
-          Page {currentPage} of {totalPages}
-        </span>
+      {!hasMore && posts.length > 0 && (
+        <div className="text-center text-gray-500 py-8">
+          You've reached the end! 🎉
+        </div>
+      )}
 
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((p) => p + 1)}
-          className="px-3 py-1 border rounded disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
-
+      {!loading && posts.length === 0 && (
+        <div className="text-center text-gray-500 py-12">
+          <p className="text-lg">No posts found.</p>
+          <p className="text-sm">Be the first to create a post!</p>
+        </div>
+      )}
     </div>
   );
 }
