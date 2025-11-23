@@ -1,14 +1,14 @@
-// app/search/page.tsx  (pages router → pages/search.tsx)
+// Alternative toggle version with buttons
 "use client";
 
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDistance } from "date-fns";
-import {  User, FileText, Heart, Eye } from "lucide-react";
+import { User, FileText, Heart, Eye } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { usePosts } from "@/hooks/usePosts";
 import { useUsers } from "@/hooks/useUsers";
@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const query = (searchParams.get("q") || "").toLowerCase();
+  const [activeTab, setActiveTab] = useState<"blogs" | "users">("blogs");
 
   const { posts } = usePosts();
   const { users } = useUsers();
@@ -25,8 +26,8 @@ export default function SearchPage() {
   const matchedBlogs = posts.filter(
     (p) =>
       p.status && // ← only published
-      p.title.toLowerCase().includes(query) ||
-      p.content.toLowerCase().includes(query) 
+      (p.title.toLowerCase().includes(query) ||
+        p.content.toLowerCase().includes(query))
   );
 
   const matchedUsers = users.filter(
@@ -38,51 +39,64 @@ export default function SearchPage() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
       <h1 className="text-3xl font-bold">
-        Search results for <span className="text-blue-600">“{query}”</span>
+        Search results for <span className="text-blue-600">"{query}"</span>
       </h1>
 
-      <div className="grid gap-8 md:grid-cols-3">
-        {/* LEFT → blogs */}
-        <section className="md:col-span-2 space-y-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <FileText className="h-4 w-4" />
-            <span>{matchedBlogs.length} blogs found</span>
-          </div>
+      {/* Toggle Buttons */}
+      <div className="flex gap-2 border-b pb-4">
+        <Button
+          variant={activeTab === "blogs" ? "default" : "outline"}
+          onClick={() => setActiveTab("blogs")}
+          className="flex items-center gap-2"
+        >
+          <FileText className="h-4 w-4" />
+          Blogs ({matchedBlogs.length})
+        </Button>
+        <Button
+          variant={activeTab === "users" ? "default" : "outline"}
+          onClick={() => setActiveTab("users")}
+          className="flex items-center gap-2"
+        >
+          <User className="h-4 w-4" />
+          Users ({matchedUsers.length})
+        </Button>
+      </div>
 
-          {matchedBlogs.length === 0 ? (
-            <Card>
-              <CardContent className="py-10 text-center text-sm text-muted-foreground">No blogs matched.</CardContent>
-            </Card>
-          ) : (
-            matchedBlogs.map((post) => <BlogRow key={post.id} post={post} />)
-          )}
-        </section>
-
-        <Separator orientation="vertical" className="hidden md:block" />
-
-        {/* RIGHT → users */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <User className="h-4 w-4" />
-            <span>{matchedUsers.length} users found</span>
-          </div>
-
-          {matchedUsers.length === 0 ? (
-            <Card>
-              <CardContent className="py-10 text-center text-sm text-muted-foreground">No users matched.</CardContent>
-            </Card>
-          ) : (
-            matchedUsers.map((user) => <UserRow key={user.id} user={user} />)
-          )}
-        </section>
+      {/* Content based on active tab */}
+      <div className="grid gap-8 md:grid-cols-1">
+        {activeTab === "blogs" ? (
+          <section className="space-y-4">
+            {matchedBlogs.length === 0 ? (
+              <Card>
+                <CardContent className="py-10 text-center text-sm text-muted-foreground">
+                  No blogs matched your search.
+                </CardContent>
+              </Card>
+            ) : (
+              matchedBlogs.map((post) => <BlogRow key={post.id} post={post} />)
+            )}
+          </section>
+        ) : (
+          <section className="space-y-4">
+            {matchedUsers.length === 0 ? (
+              <Card>
+                <CardContent className="py-10 text-center text-sm text-muted-foreground">
+                  No users matched your search.
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {matchedUsers.map((user) => <UserRow key={user.id} user={user} />)}
+              </div>
+            )}
+          </section>
+        )}
       </div>
     </main>
   );
 }
 
-/* -------------------------------------------------- */
-/*  compact blog row (smaller than All-Blogs card)   */
-/* -------------------------------------------------- */
+
 function BlogRow({ post }: { post: any }) {
   const cover = post.coverImage || `https://source.unsplash.com/random/200x120?blog,${post.id}`;
   return (
