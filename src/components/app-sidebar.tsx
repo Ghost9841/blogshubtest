@@ -51,6 +51,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import useAuthStore from "@/store/authStore"
 
 // Main navigation items
 const mainItems = [
@@ -68,12 +69,6 @@ const secondaryItems = [
   { title: "Get Help", url: "#", icon: HelpCircle },
 ]
 
-// User data
-const userData = {
-  name: "John Doe",
-  email: "john@example.com",
-  avatar: "/avatar.jpg"
-}
 
 function NavSecondary({ items }: { items: typeof secondaryItems }) {
   return (
@@ -131,7 +126,9 @@ function NavSecondary({ items }: { items: typeof secondaryItems }) {
   )
 }
 
-function NavUser({ user }: { user: typeof userData }) {
+function NavUser() {
+  const user = useAuthStore((s) => s.user);
+    const logout = useAuthStore((s) => s.logout);
   const { isMobile } = useSidebar()
 
   return (
@@ -155,15 +152,15 @@ function NavUser({ user }: { user: typeof userData }) {
                 group-data-[collapsible=icon]:h-10
                 group-data-[collapsible=icon]:w-10
               ">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src={user?.avatar} alt={user?.name} />
                 <AvatarFallback className="rounded-lg">
-                  {user.name.split(' ').map(n => n[0]).join('')}
+                  {user?.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">{user?.name}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {user.email}
+                  {user?.email}
                 </span>
               </div>
               <MoreVertical className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
@@ -178,15 +175,15 @@ function NavUser({ user }: { user: typeof userData }) {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage src={user?.avatar} alt={user?.name} />
                   <AvatarFallback className="rounded-lg">
-                    {user.name.split(' ').map(n => n[0]).join('')}
+                    {user?.name.split(' ').map(n => n[0]).join('')}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate font-medium">{user?.name}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
+                    {user?.email}
                   </span>
                 </div>
               </div>
@@ -207,7 +204,7 @@ function NavUser({ user }: { user: typeof userData }) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={logout}>
               <LogOut className="w-4 h-4 mr-2" />
               Log out
             </DropdownMenuItem>
@@ -357,7 +354,7 @@ export default function AppSidebar() {
 
         {/* FOOTER - User Menu */}
         <SidebarFooter className="p-2 border-t border-neutral-200 dark:border-neutral-800">
-          <NavUser user={userData} />
+          <NavUser />
         </SidebarFooter>
       </Sidebar>
     </TooltipProvider>
