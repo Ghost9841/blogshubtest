@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import usePosts from "@/hooks/usePosts";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import Loader from "@/components/manual-ui/Loading";
+import Loading from "@/components/manual-ui/Loading";
 
 export default function DashboardPage() {
   const { posts, fetchPosts, loading, error } = usePosts();
@@ -12,7 +12,7 @@ export default function DashboardPage() {
     fetchPosts(); 
   }, []);
 
-  if (loading) return <div><Loader/></div>;
+  if (loading) return <div className="min-h-full flex items-center justify-center"><Loading/></div>;
   if (error) return <div>{error}</div>;
 
   const totalPosts = posts.length;

@@ -11,11 +11,13 @@ export function usePosts() {
   const [error, setError] = useState("");
 
   // FETCH ALL POSTS
-  const fetchPosts = async () => {
+  const fetchPosts = async (page = 1, limit = 5) => {
     try {
       setLoading(true);
-      const { data } = await api.get("/posts");
-      setPosts(data);
+    const { data } = await api.get(`/posts`, {
+      params: { page, limit }
+    });
+    setPosts(data);
     } catch (e: any) {
       setError("Failed to fetch posts");
     } finally {

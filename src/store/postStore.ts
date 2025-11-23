@@ -9,6 +9,8 @@ interface Post {
   status: boolean;
   createdAt: string;
   updatedAt: string;
+  tags: [];
+  likes?: number;
 }
 
 interface PostStore {
