@@ -13,16 +13,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { usePosts } from "@/hooks/usePosts";
 import { StatCard, PostGridSkeleton, EmptyState, PostCard } from "./PostCardComps";
+import { PostReaderSheet } from "./ReadingSheet";
 
 export default function MyBlogsPage() {
   const { posts, fetchPosts, removePost, loading } = usePosts();
@@ -31,7 +26,7 @@ export default function MyBlogsPage() {
   const [activePost, setActivePost] = useState<any>(null);
 
   useEffect(() => {
-    fetchPosts(1, 50); // grab first 50 – tweak as needed
+    fetchPosts(1, 50);
   }, []);
 
   const filtered = posts.filter((p) =>
@@ -81,11 +76,6 @@ export default function MyBlogsPage() {
             value={posts.length}
             icon={FileText}
           />
-          {/* <StatCard
-            label="Total Reads"
-            value={posts.reduce((sum, p) => sum + (p.reads || 0), 0)}
-            icon={Eye}
-          /> */}
           <StatCard
             label="Total Likes"
             value={posts.reduce((sum, p) => sum + (p.likes || 0), 0)}
@@ -115,29 +105,11 @@ export default function MyBlogsPage() {
       </div>
 
       {/* Reader Sheet */}
-      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent side="right" className="w-full sm:max-w-2xl">
-          <SheetHeader>
-            <SheetTitle>{activePost?.title}</SheetTitle>
-          </SheetHeader>
-          <ScrollArea className="h-full pt-4">
-            {activePost?.coverImage && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={activePost.coverImage}
-                alt="cover"
-                className="w-full h-48 object-cover rounded-md mb-4"
-              />
-            )}
-            <div
-              className="prose prose-sm dark:prose-invert max-w-none"
-              dangerouslySetInnerHTML={{ __html: activePost?.content || "" }}
-            />
-          </ScrollArea>
-        </SheetContent>
-      </Sheet>
+      <PostReaderSheet
+        open={sheetOpen}
+        onOpenChange={setSheetOpen}
+        activePost={activePost}
+      />
     </div>
   );
 }
-
-
