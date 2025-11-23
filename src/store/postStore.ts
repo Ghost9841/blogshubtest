@@ -6,6 +6,7 @@ interface Post {
   content: string;
   authorId: string;
   coverImage?: string;
+  status: boolean;
   createdAt: string;
   updatedAt: string;
 }

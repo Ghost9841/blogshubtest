@@ -7,6 +7,13 @@ import {
   Folder,
   Edit3,
   Settings,
+  HelpCircle,
+  Search,
+  User,
+  CreditCard,
+  Bell,
+  LogOut,
+  MoreVertical,
 } from "lucide-react"
 
 import {
@@ -19,6 +26,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
+  SidebarFooter,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 import {
@@ -28,7 +37,23 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-const items = [
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+// Main navigation items
+const mainItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "My Blogs", url: "/myblogs", icon: FileText },
   { title: "Create Post", url: "/createblog", icon: PlusSquare },
@@ -36,6 +61,162 @@ const items = [
   { title: "Drafts", url: "/drafts", icon: Edit3 },
   { title: "Settings", url: "/settings", icon: Settings },
 ]
+
+// Secondary navigation items (should be at bottom)
+const secondaryItems = [
+  { title: "Search", url: "#", icon: Search },
+  { title: "Get Help", url: "#", icon: HelpCircle },
+]
+
+// User data
+const userData = {
+  name: "John Doe",
+  email: "john@example.com",
+  avatar: "/avatar.jpg"
+}
+
+function NavSecondary({ items }: { items: typeof secondaryItems }) {
+  return (
+    <SidebarGroup className="mt-auto">
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {items.map((item) => (
+            <SidebarMenuItem key={item.title}>
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className="
+                      hover:bg-neutral-100 dark:hover:bg-neutral-900 
+                      transition-colors
+                      group-data-[collapsible=icon]:h-12!
+                      group-data-[collapsible=icon]:w-12!
+                      group-data-[collapsible=icon]:mx-auto
+                      group-data-[collapsible=icon]:justify-center
+                    "
+                  >
+                    <a href={item.url} className="flex items-center gap-4 px-3 py-3">
+                      <item.icon
+                        className="
+                          h-5 w-5 text-black dark:text-white 
+                          group-data-[collapsible=icon]:h-6
+                          group-data-[collapsible=icon]:w-6
+                          shrink-0
+                        "
+                      />
+                      <span
+                        className="
+                          text-black dark:text-white 
+                          whitespace-nowrap font-medium
+                          group-data-[collapsible=icon]:hidden
+                        "
+                      >
+                        {item.title}
+                      </span>
+                    </a>
+                  </SidebarMenuButton>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="right"
+                  className="bg-black text-white dark:bg-white dark:text-black px-3 py-2"
+                >
+                  {item.title}
+                </TooltipContent>
+              </Tooltip>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  )
+}
+
+function NavUser({ user }: { user: typeof userData }) {
+  const { isMobile } = useSidebar()
+
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="
+                data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground
+                group-data-[collapsible=icon]:h-12!
+                group-data-[collapsible=icon]:w-12!
+                group-data-[collapsible=icon]:mx-auto
+                group-data-[collapsible=icon]:justify-center
+                group-data-[collapsible=icon]:px-0!
+              "
+            >
+              <Avatar className="
+                h-8 w-8 rounded-lg
+                group-data-[collapsible=icon]:h-10
+                group-data-[collapsible=icon]:w-10
+              ">
+                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarFallback className="rounded-lg">
+                  {user.name.split(' ').map(n => n[0]).join('')}
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                <span className="truncate font-medium">{user.name}</span>
+                <span className="text-muted-foreground truncate text-xs">
+                  {user.email}
+                </span>
+              </div>
+              <MoreVertical className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            side={isMobile ? "bottom" : "right"}
+            align="end"
+            sideOffset={4}
+          >
+            <DropdownMenuLabel className="p-0 font-normal">
+              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                <Avatar className="h-8 w-8 rounded-lg">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback className="rounded-lg">
+                    {user.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="text-muted-foreground truncate text-xs">
+                    {user.email}
+                  </span>
+                </div>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <User className="w-4 h-4 mr-2" />
+                Account
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <CreditCard className="w-4 h-4 mr-2" />
+                Billing
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Bell className="w-4 h-4 mr-2" />
+                Notifications
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <LogOut className="w-4 h-4 mr-2" />
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  )
+}
 
 export default function AppSidebar() {
   return (
@@ -47,6 +228,7 @@ export default function AppSidebar() {
           overflow-visible 
           bg-white dark:bg-black 
           border-r border-neutral-200 dark:border-neutral-800
+          flex flex-col
         "
       >
         {/* HEADER */}
@@ -99,8 +281,8 @@ export default function AppSidebar() {
         </SidebarHeader>
 
         {/* CONTENT */}
-        <SidebarContent>
-          {/* Navigation Group */}
+        <SidebarContent className="flex-1">
+          {/* Main Navigation Group */}
           <SidebarGroup>
             <SidebarGroupLabel
               className="
@@ -115,7 +297,7 @@ export default function AppSidebar() {
 
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
-                {items.map((item) => (
+                {mainItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <Tooltip delayDuration={0}>
                       <TooltipTrigger asChild>
@@ -127,7 +309,6 @@ export default function AppSidebar() {
                             group-data-[collapsible=icon]:h-12!
                             group-data-[collapsible=icon]:w-12!
                             group-data-[collapsible=icon]:mx-auto
-                            group-data-[collapsible=icon]:mt-2
                             group-data-[collapsible=icon]:justify-center
                           "
                         >
@@ -170,27 +351,14 @@ export default function AppSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
 
-          {/* Stats shown ONLY when collapsed */}
-          <SidebarGroup
-            className="
-              mt-auto border-t 
-              border-neutral-200 dark:border-neutral-800 
-              pt-4
-              group-data-[state=expanded]:hidden
-            "
-          >
-            <SidebarGroupContent>
-              <div className="flex flex-col items-center space-y-2 p-2">
-                <div className="text-neutral-500 dark:text-neutral-400 text-sm font-semibold">
-                  V 1.0
-                </div>
-                <div className="text-neutral-500 dark:text-neutral-400 text-xs text-center">
-                  Blog Platform
-                </div>
-              </div>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          {/* Secondary Navigation - Now at the bottom */}
+          <NavSecondary items={secondaryItems} />
         </SidebarContent>
+
+        {/* FOOTER - User Menu */}
+        <SidebarFooter className="p-2 border-t border-neutral-200 dark:border-neutral-800">
+          <NavUser user={userData} />
+        </SidebarFooter>
       </Sidebar>
     </TooltipProvider>
   )
