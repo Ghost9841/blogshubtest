@@ -60,12 +60,11 @@ const mainItems = [
   { title: "Create Post", url: "/createblog", icon: PlusSquare },
   { title: "Categories", url: "/categories", icon: Folder },
   { title: "Drafts", url: "/drafts", icon: Edit3 },
-  { title: "Settings", url: "/settings", icon: Settings },
 ]
 
 // Secondary navigation items (should be at bottom)
 const secondaryItems = [
-  { title: "Search", url: "#", icon: Search },
+  { title: "Settings", url: "/settings", icon: Settings },
   { title: "Get Help", url: "#", icon: HelpCircle },
 ]
 
@@ -128,7 +127,7 @@ function NavSecondary({ items }: { items: typeof secondaryItems }) {
 
 function NavUser() {
   const user = useAuthStore((s) => s.user);
-    const logout = useAuthStore((s) => s.logout);
+  const logout = useAuthStore((s) => s.logout);
   const { isMobile } = useSidebar()
 
   return (
@@ -190,10 +189,14 @@ function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+                <a
+                  href={"/profile"}
+                >
+              <DropdownMenuItem >
                 <User className="w-4 h-4 mr-2" />
-                Account
+                  Account
               </DropdownMenuItem>
+                </a>
               <DropdownMenuItem>
                 <CreditCard className="w-4 h-4 mr-2" />
                 Billing
@@ -205,8 +208,8 @@ function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout}
-            className="text-red-500 focus:text-red-600  hover:underline"
->
+              className="text-red-500 focus:text-red-600  hover:underline"
+            >
               <LogOut className="w-4 h-4 mr-2 text-red-500" />
               Log out
             </DropdownMenuItem>

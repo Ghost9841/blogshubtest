@@ -47,7 +47,7 @@ export default function Navbar() {
             <span className="text-xl font-bold">BlogHub</span>
           </Link>
 
-          <Link href="/allblogs" className="flex items-center space-x-2">
+          <Link href="/allblogs" className="flex items-center space-x-2 hover:underline">
             <span>Browse</span>
           </Link>
 
@@ -62,7 +62,7 @@ export default function Navbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="space-x-1">
+              <Button variant="ghost" size="sm" className="space-x-1 hover:underline">
                 <span>Write</span>
                 <ChevronDown className="h-4 w-4" />
               </Button>

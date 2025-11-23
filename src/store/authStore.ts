@@ -1,3 +1,4 @@
+// store/authStore.ts
 import { create } from "zustand";
 
 interface User {
@@ -6,6 +7,7 @@ interface User {
   email: string;
   avatar: string;
   token: string;
+  createdAt?: string; // we will store this on register
 }
 
 interface AuthState {
@@ -13,7 +15,8 @@ interface AuthState {
   isAuthenticated: boolean;
   login: (user: User) => void;
   logout: () => void;
-  hydrate: () => void; 
+  updateUser: (partial: Partial<User>) => void; // ← NEW
+  hydrate: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -23,10 +26,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   hydrate: () => {
     if (typeof window === "undefined") return;
     const saved = localStorage.getItem("user");
-
-    if (saved) {
-      set({ user: JSON.parse(saved), isAuthenticated: true });
-    }
+    if (saved) set({ user: JSON.parse(saved), isAuthenticated: true });
   },
 
   login: (user) => {
@@ -40,6 +40,14 @@ export const useAuthStore = create<AuthState>((set) => ({
     localStorage.removeItem("user");
     localStorage.removeItem("token");
   },
+
+  updateUser: (partial) =>
+    set((state) => {
+      if (!state.user) return state;
+      const updated = { ...state.user, ...partial };
+      localStorage.setItem("user", JSON.stringify(updated));
+      return { user: updated };
+    }),
 }));
 
 export default useAuthStore;
