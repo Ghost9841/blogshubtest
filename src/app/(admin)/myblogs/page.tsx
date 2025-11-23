@@ -8,6 +8,7 @@ import {
   Heart,
   Search,
   Plus,
+  Pen,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,9 @@ export default function MyBlogsPage() {
   const filtered = posts.filter((p) =>
     p.title.toLowerCase().includes(query.toLowerCase())
   );
+
+  const published = posts.filter((p) => p.status).length;
+  const drafts = posts.filter((p) => !p.status).length;
 
   const openPost = (post: any) => {
     setActivePost(post);
@@ -72,9 +76,14 @@ export default function MyBlogsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <StatCard
             label="Blogs Published"
-            value={posts.length}
+            value={published}
             icon={FileText}
           />
+            <StatCard
+              label="Blogs Drafts"
+              value={drafts}
+              icon={Pen}
+            />
           <StatCard
             label="Total Likes"
             value={posts.reduce((sum, p) => sum + (p.likes || 0), 0)}

@@ -11,7 +11,7 @@ export function usePosts() {
   const [error, setError] = useState("");
 
   // FETCH ALL POSTS (Paginated)
-  const fetchPosts = async (page = 1, limit = 6) => {
+  const fetchPosts = async (page = 1, limit = 100) => {
     try {
       setLoading(true);
       setError("");
