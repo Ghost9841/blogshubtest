@@ -25,7 +25,7 @@ export default function DraftPage() {
   useEffect(() => {
     (async () => {
       const first = await fetchPosts(1, 50); // 50 is plenty for drafts
-      const drafts = first.filter((p) => !p.status);
+      const drafts = first.filter((p: { status: any; }) => !p.status);
       setHasMore(drafts.length === PAGE_SIZE);
       setPage(2);
     })();
