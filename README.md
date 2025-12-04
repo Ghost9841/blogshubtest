@@ -138,3 +138,5 @@ npm run seed       # insert sample data (Supabase mode)
 
 **Happy hacking!** 🚀  
 Open a PR when you’re done – we’ll review & merge.
+
+Now need to let go of this project sigh
